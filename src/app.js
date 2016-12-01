@@ -9,16 +9,19 @@ const auth = require('./utils/auth')(
 )
 
 const App = React.createClass({
+  logout(e) {
+    auth.logout()
+  },
   render() {
     return (
       <HashRouter>
         <div>
           <Match exactly pattern="/" render={(matchProps) => <Home {...matchProps} auth={auth} />} />
-          <MatchWhenAuthorized exactly pattern="/favorites" component={Favorites} />
-          <MatchWhenAuthorized exactly pattern="/favorites/:id" component={Favorite} />
-          <MatchWhenAuthorized pattern="/favorites/:id/edit" component={FavoriteForm} />
-          <MatchWhenAuthorized pattern="/favorites/new" component={FavoriteForm} />
-          <MatchWhenAuthorized pattern="/about" component={About} />
+          <MatchWhenAuthorized exactly pattern="/favorites" component={Favorites} logout={this.logout} />
+          <MatchWhenAuthorized exactly pattern="/favorites/:id" component={Favorite}  logout={this.logout} />
+          <MatchWhenAuthorized pattern="/favorites/:id/edit" component={FavoriteForm}  logout={this.logout} />
+          <MatchWhenAuthorized pattern="/favorites/new" component={FavoriteForm}  logout={this.logout} />
+          <MatchWhenAuthorized pattern="/about" component={About}  logout={this.logout} />
         </div>
       </HashRouter>
 
@@ -29,7 +32,7 @@ const App = React.createClass({
 const MatchWhenAuthorized = ({component: Component, ...rest}) =>
   <Match {...rest} render={props => auth.loggedIn() ?
     <div>
-      <div style={{float: 'right'}}><button onClick={e => auth.logout()}>Logout</button></div>
+      <div style={{float: 'right'}}><button onClick={props.logout}>Logout</button></div>
       <Component {...props} />
     </div> : <Redirect to="/" /> } />
 
