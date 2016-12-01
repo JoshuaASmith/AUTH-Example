@@ -11,11 +11,12 @@ const Favorites = React.createClass({
   componentDidMount () {
     data.list('favorites')
       .then(favorites => this.setState({favorites}))
+      .catch(err => console.log(err.message))
 
   },
   render () {
     const transform = map(fav => {
-      return <div key={fav.id}>{fav.name}</div>
+      return <div key={fav.id}><Link to={`/favorites/${fav.id}`}>{fav.name}</Link></div>
     })
     return (
       <div>
