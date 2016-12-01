@@ -1,6 +1,6 @@
 const React = require('react')
 
-const {Redirect} = require('react-router')
+const { Redirect } = require('react-router')
 
 const { set, lensProp } = require('ramda')
 
@@ -15,6 +15,7 @@ const FavoriteForm = React.createClass({
   },
   componentDidMount () {
     if (this.props.params.id) {
+      // edit mode
       data.get('favorites', this.props.params.id)
         .then(favorite => this.setState({favorite}))
     }

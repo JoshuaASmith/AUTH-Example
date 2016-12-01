@@ -4,7 +4,7 @@ const data = require('../../utils/data')()
 const { map } = require('ramda')
 
 const transform = map(fav => {
-  return <div key={fav.id}><Link to={`/favorites/${fav.id}`}>{fav.name}</Link></div>
+  return <div key={fav.id}><Link to={`/favorites/${fav.id}/show`}>{fav.name}</Link></div>
 })
 
 const Favorites = React.createClass({

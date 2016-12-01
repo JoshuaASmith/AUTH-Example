@@ -1,5 +1,5 @@
 const React = require('react')
-const { Match, BrowserRouter, HashRouter, Redirect } = require('react-router')
+const { Match, HashRouter, Redirect } = require('react-router')
 const { Home, About, Favorites, FavoriteForm, Favorite } = require('./pages')
 
 const auth = require('./utils/auth')(
@@ -9,16 +9,23 @@ const auth = require('./utils/auth')(
 )
 
 const App = React.createClass({
+  getInitialState () {
+    return {
+      logout: false
+    }
+  },
   logout(e) {
     auth.logout()
+    this.setState({logout: true})
   },
   render() {
     return (
       <HashRouter>
         <div>
-          <Match exactly pattern="/" render={(matchProps) => <Home {...matchProps} auth={auth} />} />
+          { this.state.logout ? <Redirect to="/" /> : null }
+          <Match exactly pattern="/" render={(props) => <Home {...props} auth={auth} logout={this.logout} />} />
           <MatchWhenAuthorized exactly pattern="/favorites" component={Favorites} logout={this.logout} />
-          <MatchWhenAuthorized exactly pattern="/favorites/:id" component={Favorite}  logout={this.logout} />
+          <MatchWhenAuthorized exactly pattern="/favorites/:id/show" component={Favorite}  logout={this.logout} />
           <MatchWhenAuthorized pattern="/favorites/:id/edit" component={FavoriteForm}  logout={this.logout} />
           <MatchWhenAuthorized pattern="/favorites/new" component={FavoriteForm}  logout={this.logout} />
           <MatchWhenAuthorized pattern="/about" component={About}  logout={this.logout} />
@@ -29,10 +36,10 @@ const App = React.createClass({
   }
 })
 
-const MatchWhenAuthorized = ({component: Component, ...rest}) =>
+const MatchWhenAuthorized = ({component: Component, logout: logout, ...rest}) =>
   <Match {...rest} render={props => auth.loggedIn() ?
     <div>
-      <div style={{float: 'right'}}><button onClick={props.logout}>Logout</button></div>
+      <div style={{float: 'right'}}><button onClick={logout}>Logout</button></div>
       <Component {...props} />
     </div> : <Redirect to="/" /> } />
 

@@ -2,6 +2,11 @@ const React =  require('react')
 const data = require('../../utils/data')()
 const { Link, Redirect } = require('react-router')
 
+import confirm from 'react-confirm2'
+
+const obj = new Object()
+
+// const confirm = require('react-confirm2')
 const Favorite = React.createClass({
   getInitialState() {
     return {
@@ -18,8 +23,13 @@ const Favorite = React.createClass({
   },
   handleRemove(e) {
     e.preventDefault()
-    data.remove('favorites', this.props.params.id, this.state.fav)
-      .then(res => this.setState({resolved: true}))
+    confirm('Are you sure you want to remove this favorite location?', () => {
+      data.remove('favorites', this.props.params.id, this.state.fav)
+        .then(res => {
+          this.setState({resolved: true})
+        })
+
+    })
   },
   render() {
     return (
