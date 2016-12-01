@@ -16,7 +16,9 @@ const Favorites = React.createClass({
   componentDidMount () {
     data.list('favorites')
       .then(favorites => this.setState({favorites}))
-      .catch(err => console.log(err.message))
+      .catch(err => {
+        this.props.logout()
+      })
 
   },
   render () {

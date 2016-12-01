@@ -40,7 +40,7 @@ const MatchWhenAuthorized = ({component: Component, logout: logout, ...rest}) =>
   <Match {...rest} render={props => auth.loggedIn() ?
     <div>
       <div style={{float: 'right'}}><button onClick={logout}>Logout</button></div>
-      <Component {...props} />
+      <Component {...props} logout={logout} />
     </div> : <Redirect to="/" /> } />
 
 module.exports = App

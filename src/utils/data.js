@@ -9,7 +9,15 @@ const data = function () {
   }
   const list = model => fetch(`${url}/${model}`, {
     headers: setHeader()
-  }).then(toJSON)
+  })
+    .then(res => {
+      if (res.status === 401) {
+        throw new Error('Auth Denied')
+      }
+      return res
+    })
+    .then(toJSON)
+
 
   const get = (model, id) => fetch(`${url}/${model}/${id}`, {
     headers: setHeader()
