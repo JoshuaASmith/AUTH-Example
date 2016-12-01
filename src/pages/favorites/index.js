@@ -2,6 +2,7 @@ const React = require('react')
 const {Link} = require('react-router')
 const data = require('../../utils/data')()
 const {map} = require('ramda')
+
 const Favorites = React.createClass({
     getInitialState() {
         return {favorites: []}
