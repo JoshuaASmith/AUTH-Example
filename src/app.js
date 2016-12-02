@@ -10,14 +10,11 @@ const App = React.createClass({
     // },
     logout(e) {
         auth.logout()
-        this.setState({loggedout: true})
+        this.setState({logout: true})
     },
     render() {
         return (
             <HashRouter>
-                {/* {this.state.logout
-                    ? <Redirect to="/"/>
-                    : null} */}
                 <div>
                     <Match exactly pattern="/" render={(props) => <Home {...props} auth={auth}/>}/>
                     <MatchWhenAuthorized exactly pattern="/favorites" component={Favorites} logout={this.logout}/>
